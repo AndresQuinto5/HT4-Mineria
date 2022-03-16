@@ -200,3 +200,68 @@ summary(fitLM)
 plot(fitLM)
 
 ```
+
+
+3.	Analice el modelo. Determine si hay multicolinealidad en las variables, y cuáles son las que aportan al modelo, por su valor de significación. Haga un análisis de correlación de las variables del modelo y especifique si el modelo se adapta bien a los datos. Explique si hay sobreajuste (overfitting) o no. En caso de existir sobreajuste, haga otro modelo que lo corrija.
+
+```{r}
+library(corrplot)
+corrplot(cor(datos), method = "circle")
+```
+
+La correlación lineal las variables en su mayoria es baja, sin embargo en algunos escazos casos, se alcanzan valores altos.Por ende, se puede decir que el modelo se adapta bien a los datos con los que se está trabajando y además hay multicolinealidad entre algunas variables. 
+Debido a la cantidad de correlaciones obtenidas durante el análisis, se puede concluir que no hay prsencia de overfitting en el modelo. 
+
+
+
+4.	Determine la calidad del modelo realizando un análisis de los residuos.
+
+
+```{r}
+plot(fitLM)
+
+```
+
+Residuals vs. fitted
+Esta gráfica permite mostrar si los residuos tienen patrones no lineales. 
+De forma visual no se puede identidficar algun patron que indique la presencia de relaciones no 
+lineales, mostrando residuos igualmente a lo largo de la grafica. 
+
+Normal Q-Q
+Esta gráfica muestra si los residuos tienen una distribucion normal, mientras mas elementos 
+alineados a la diagonal mejor. 
+En la gráfica realizada la mayoria de cuantiles se encuentra alineada o muy cercana a la 
+diagonal trazada por lo tanto se puede decir que la distribución es normal.
+
+Scale-Location
+Esta gráfica permite analizar la varianza, pudiendo asi determinar si se presenta 
+homocedasticidad o heterocedasticidad.
+En la gráfica mostrada, se puede observar que la mayoria de datos se encuentran en 
+una distribución aceptable desde 1e+05 hasta 4e+05. Algunos datos en el extremo 
+derecho se comportan de manera distinta. Sin embargo, estos datos representan un 
+porcentaje menor por lo que se puede concluir que en este caso se presenta homocedasticidad. 
+
+Residuals vs Leverage
+A diferencia de las gráficas anteriores, en este caso no se buscan patrones sino 
+identificar casos que podrían influenciar la linea de regresión. Estos suelen 
+ubicarse en los extremos superior e inferior de lado derecho, más allá de la linea 
+que marca la distancia de Cook. 
+En el gráfico realizado se pueden identificar dos casos que pueden representar 
+un impacto (1183 y 1299).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

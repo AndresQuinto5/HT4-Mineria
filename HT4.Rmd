@@ -1,7 +1,7 @@
 ---
 title: "HT4"
 author: "Andres Quinto, Mirka Monzon, Oscar De Leon"
-date: "14/03/2022"
+date: "17/03/2022"
 output: 
   html_document:
     code_folding: hide
@@ -12,6 +12,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ModelMetrics)
+library(tidyverse)
 library(corrplot)
 library(nortest)
 library(caret)
@@ -195,7 +196,7 @@ test<-datos[-trainRowsNumber,]
 
 #train$y<- as.numeric(factor(datos$clasificacion))
 
-fitLM<-lm(SalePrice~., data = train)
+fitLM<-lm(SalePrice~., data = train) #modelo
 summary(fitLM)
 plot(fitLM)
 
@@ -251,7 +252,35 @@ un impacto (1183 y 1299).
 
 
 
+5. Utilice el modelo con el conjunto de prueba y determine la eficiencia del algoritmo para predecir el precio de las casas.
 
+```{r}
+prediction <- fitLM %>% predict(test)
+
+data.frame(RMSE = RMSE(prediction, test$SalePrice), R2 = R2(prediction, test$SalePrice))
+ 
+anova(fitLM) #Partial f-test
+
+```
+
+Como se puede ver en el cuadro anterior, se obtuvo R2, esta representa la correlacion del modelo, mientras mas cercano sea este resultado a 1 mas adecuado es el modelo, se obtuvo 0.85 para nuestro modelo de regresion lineal los cual es bastante bueno. 
+
+Ahora de acuerdo al siguiente cuadro, se realizo un partial f-tes, este nos indica si las variables independientes son lo bastante adecuadas para ser consideradas en el modelo de regresion lineal. Aqui la columna que nos interesa es Pr(>F) esta nos indica que mientras mas bajo es la cifra, mas adecuada es la variable, tenemos 3 variables como YearBuilt, TotRmsAbvGrd y GarageCars, las cuales obtuvieron un valor bastante alto y atipico, por lo que eso pudo afectar a la correlacion del modelo. 
+
+
+
+6. Discuta sobre la efectividad del modelo. Haga los gráficos que crea que le pueden ayudar en la discusión.
+
+```{r}
+plot(train$SalePrice, col="pink")
+```
+Para discutir la efectividad del modelo podemos ver el summary del modelo (se encuentra al final de las graficas de correlacion, antes de las graficas de residuo), podemos ver que al final de toda la informacion tenemos Multiple R-squared, este nos dio un 0.8, el cual es parecido a la cantidad obtenida anteriormente en la tabla de analisis de varianza. Por lo mencionado anteriormente y agregando la informacion del inciso 5, se puede decir que el modelo podria mejorarse pero en principio es bueno. 
+
+
+
+7. Compare la eficiencia del algoritmo con el resultado obtenido con el árbol de decisión (el de regresión). ¿Cuál es mejor para predecir? ¿Cuál se demoró más en procesar?
+En general el algoritmo lo hizo mejor que el arbol de decision, se tubo una correlacion alta, lo que prueba el rendimiento del modelo usado, tambien cabe mencionar que el algoritmo realizo un mejor trabajo con la cantidad de datos comparado con el arbol de decision.
+Se puede decir que el algoritmo es mejor para predecir y tambien se demora menos en procesar, aunque esto tambien depende de la cantidad de datos y cual es el objetivo al que queremos llegar. 
 
 
 
